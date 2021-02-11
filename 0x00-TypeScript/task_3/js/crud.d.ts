@@ -1,5 +1,5 @@
 import { RowID, RowElement } from './interface';
 
-expport type insertRow = (row: RowElement) => number;
-export type deleteRow = (rowId: RowID) => void;
-export type updateRow = (rowId: RowID, row: RowElement) => number;
+export function insertRow(row: RowElement): number;
+export function deleteRow(rowId: RowID): void;
+export function updateRow(rowId: RowID, row: RowElement): RowID;
