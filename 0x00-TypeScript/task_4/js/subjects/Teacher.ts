@@ -1,5 +1,5 @@
-export namespace Subjects {
-  interface Teacher {
+namespace Subjects {
+  export interface TeacherInterface {
     firstName: string;
     lastName: string;
   }
