@@ -3,8 +3,8 @@ const java = new Subjects.Java();
 const react = new Subjects.React();
 
 let cTeacher = {
-	firstName: 'Pablo',
-	lastName: 'Escobar',
+	firstName: 'Chris',
+	lastName: 'Duarte',
 	experienceTeachingC: 10,
 };
 
