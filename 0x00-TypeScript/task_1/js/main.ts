@@ -13,6 +13,7 @@ interface Directors extends Teacher {
 }
 
 // task 3
+
 interface printTeacherFunction {
   (firstName: string, lastName: string): string;
 }
@@ -47,3 +48,11 @@ class StudentClass implements StudentClassInterface {
     return this.firstName;
   }
 };
+
+export {
+  printTeacher,
+  StudentClass
+}
+
+const obj:StudentClassInterface = new StudentClass('Iheb', 'Khaldi');
+console.log(obj);
