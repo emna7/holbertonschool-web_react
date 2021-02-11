@@ -5,30 +5,43 @@ interface Student {
   location: string;
 }
 const firstSudent: Student = {
-  firstName: 'Arturo',
-  lastName: 'Adamo',
-  age: 18,
-  location: 'Split',
+  firstName: 'Emna',
+  lastName: 'benhadj',
+  age: 23,
+  location: 'Tunis',
 }
 const secondSudent: Student = {
-  firstName: 'Artur',
-  lastName: 'Adamian',
+  firstName: 'Chayma',
+  lastName: 'Ajili',
   age: 35,
-  location: 'San Francisco',
+  location: 'Ariana',
 }
 
-const studentsList: Array<Student> = [ firstSudent, secondSudent ];
+const studentsList: Array<Student> = [studentOne, studentTwo];
+const labels: string[] = ['firstName', 'location'];
 
-const table = document.createElement('table') as HTMLTableElement;
-
-studentsList.forEach((student: Student) => {
-  const row = table.insertRow()
-  const name = document.createElement('td');
-  const location = document.createElement('td');
-  name.textContent = student.firstName;
-  location.textContent = student.location;
-  row.appendChild(name);
-  row.appendChild(location);
-});
+const table: HTMLTableElement = document.createElement('table');
+const tbody: HTMLTableSectionElement = document.createElement('tbody');
+const thead: HTMLTableSectionElement = document.createElement('thead');
 
 document.body.appendChild(table);
+table.appendChild(thead);
+table.appendChild(tbody);
+
+for (let i: number = 0; i < labels.length; i++) {
+	const th: HTMLTableCellElement = document.createElement('th');
+	th.appendChild(document.createTextNode(`${labels[i]}`));
+	thead.appendChild(th);
+}
+
+for (let i :number = 0; i < studentsList.length; i++) {
+	const tr: HTMLTableRowElement = document.createElement('tr');
+	tbody.appendChild(tr);
+	const values: string[] = [studentsList[i].firstName, studentsList[i].location]
+
+	for (let j :number = 0; j < values.length; j++) {
+		const td: HTMLTableCellElement = document.createElement('td');
+		td.appendChild(document.createTextNode(`${values[j]}`));
+		tr.appendChild(td);
+	}
+}
