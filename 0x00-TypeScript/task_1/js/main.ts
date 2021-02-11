@@ -25,34 +25,36 @@ const printTeacher: printTeacherFunction = function (
 }
 
 // task 4
-
-interface StudentContructor {
-  new(firstName: string, lastName: string): StudentClassInterface;
+interface StudentConstructor {
+	new(firstName: string, lastName: string): StudentClassInterface;
 }
 
 interface StudentClassInterface {
-  workOnHomework(): string;
-  displayName: string;
+	workOnHomework(): string;
+	displayName(): string;
 }
 
-class StudentClass implements StudentClassInterface {
-  firstName: string;
-  lastName: string;
-  constructor(firstName: string, lastName: string) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-  }
-  workOnHomework() {
-    return 'Currently working';
-  }
-  displayName() {
-    return `${this.firstName}`;
-  }
+const StudentClass: StudentConstructor = class StudentClass implements StudentClassInterface {
+	firstName: string;
+	lastName: string;
+
+	constructor (firstName: string, lastName: string) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
+	workOnHomework() {
+		return 'Currently working';
+	}
+
+	displayName() {
+		return `${this.firstName}`;
+	}
 }
 
 export {
-  printTeacher,
-  StudentClass
+	printTeacher,
+	StudentClass
 }
 
 const obj:StudentClassInterface = new StudentClass('Iheb', 'Khaldi');
