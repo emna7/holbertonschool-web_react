@@ -13,14 +13,13 @@ interface Directors extends Teacher {
 }
 
 // task 3
-
 interface printTeacherFunction {
-  (firstName: string, lastName: string): string;
+	(firstName: string, lastName: string): string;
 }
 
 const printTeacher: printTeacherFunction = function (
 	firstName: string,
-	lastName: string): string
+	lastName: string
 ): string {
 	return `${firstName[0]}. ${lastName}`;
 }
