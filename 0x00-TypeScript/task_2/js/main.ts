@@ -11,33 +11,58 @@ interface TeacherInterface {
 }
 
 class Director implements DirectorInterface {
-  workFromHome = () => 'Working from home';
-  getToWork = () => 'Getting a coffee break';
-  workDirectorTasks = () => 'Getting to director tasks';
+  workFromHome() {
+    return `Working from home`;
+  }
+  getToWork() {
+    return `Getting a coffee break`;
+  }
+  workDirectorTasks() {
+    return `Getting to director tasks`;
+  }
 }
-
 class Teacher implements TeacherInterface {
-  workFromHome = () => 'Cannot work from home';
-  getCoffeeBreak = () => 'Cannot have a break';
-  workTeacherTasks = () => 'Getting to work';
+	workFromHome() {
+		return `Cannot work from home`;
+	}
+
+	getCoffeeBreak() {
+		return `Cannot have a break`;
+	}
+
+	workDirectorTasks() {
+		return `Getting to work`;
+	}
 }
 
-const createEmployee = (salary: string | number) => {
-  if (Number(salary) < 500) return new Teacher
-  else return new Director;
+function createEmployee(salary: string | number) {
+  if (Number(salary) < 500) return new Teacher();
+  else return new Director();
 }
 
-const isDirector = (employee: Director | Teacher): boolean => {
-  return employee.workFromHome() === 'Working from home';  
+function isDirector(employee: DirectorInterface | TeacherInterface): boolean {
+  return (employee instanceof Director);  
 }
 
-const executeWork = (employee: Director | Teacher): string => {
-  if (isDirector(employee)) return employee.workDirectorTasks()
-  else return employee.workTeacherTasks();
+function executeWork(employee: DirectorInterface | TeacherInterface): string {
+  if (isDirector(employee)) {
+     return employee.workDirectorTasks();
+  else
+    return employee.workTeacherTasks();
+  }
 }
 
 type Subjects = 'Math' | 'History';
-const teachClass = (todayClass: Subjects): string => {
-  if (todayClass === 'Math') return 'Teaching Math';
-  else return 'Teaching History';
+function teachClass = (todayClass: Subjects): string {
+  if (todayClass === 'Math') return `Teaching Math`;
+  else return `Teaching History`;
+}
+
+export {
+	Director,
+	Teacher,
+	createEmployee,
+	isDirector,
+	executeWork,
+	teachClass,
 }
