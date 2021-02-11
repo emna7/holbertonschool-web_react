@@ -11,16 +11,19 @@ interface TeacherInterface {
 }
 
 class Director implements DirectorInterface {
-  workFromHome() {
-    return `Working from home`;
-  }
-  getToWork() {
-    return `Getting a coffee break`;
-  }
-  workDirectorTasks() {
-    return `Getting to director tasks`;
-  }
+	workFromHome() {
+		return `Working from home`;
+	}
+
+	getCoffeeBreak() {
+		return `Getting a coffee break`;
+	}
+
+	workDirectorTasks() {
+		return `Getting to director tasks`;
+	}
 }
+
 class Teacher implements TeacherInterface {
 	workFromHome() {
 		return `Cannot work from home`;
@@ -35,27 +38,33 @@ class Teacher implements TeacherInterface {
 	}
 }
 
-function createEmployee(salary: string | number) {
-  if (Number(salary) < 500) return new Teacher();
-  else return new Director();
+function createEmployee(salary: number): Director | Teacher {
+	if (typeof(salary) === 'number' && salary < 500) {
+		return new Teacher();
+	}
+	return new Director();
 }
 
 function isDirector(employee: DirectorInterface | TeacherInterface): boolean {
-  return (employee instanceof Director);  
+	return (employee instanceof Director);
 }
 
 function executeWork(employee: DirectorInterface | TeacherInterface): string {
-  if (isDirector(employee)) {
-     return employee.workDirectorTasks();
-  else
-    return employee.workTeacherTasks();
-  }
+	if (employee instanceof Director) {
+		return employee.workDirectorTasks();
+	} else if (employee instanceof Teacher) {
+		return employee.workDirectorTasks();
+	}
 }
 
-type Subjects = 'Math' | 'History';
-function teachClass = (todayClass: Subjects): string {
-  if (todayClass === 'Math') return `Teaching Math`;
-  else return `Teaching History`;
+type Subjects = "Math" | "History";
+
+function teachClass(todayClass:Subjects): string {
+	if (todayClass === "Math") {
+		return `Teaching Math`;
+	} else if (todayClass === "History") {
+		return `Teaching History`;
+	}
 }
 
 export {
