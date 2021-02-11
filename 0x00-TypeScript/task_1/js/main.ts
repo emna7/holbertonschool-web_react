@@ -18,10 +18,12 @@ interface printTeacherFunction {
   (firstName: string, lastName: string): string;
 }
 
-const printTeacher: printTeacherFunction = (firstName: string, lastName: string): string):
-string => {
+const printTeacher: printTeacherFunction = function (
+  firstName: string,
+  lastName: string): string
+): string => {
   return `${firstName[0]}. ${lastName}`;
-};
+}
 
 // task 4
 
