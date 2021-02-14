@@ -1,12 +1,14 @@
-export interface MajorCredits {
+interface MajorCredits {
     credits: number;
+    brand: 'brand1';
 }
-export interface MinorCredits {
+interface MinorCredits {
   credits: number;
+  brand: 'brand2';
 }
-export const sumMajorCredits = (subject1: number, subject2: number): MajorCredits => {
-  return {credits: subject1 + subject2};
+function sumMajorCredits (subject1: number, subject2: number): number {
+  return subject1 + subject2;
 }; 
-export const sumMinorCredits = (subject1: number, subject2: number): MinorCredits => {
-  return {credits: subject1 + subject2};
-}; 
+function sumMinorCredits (subject1: number, subject2: number): {
+  return subject1 + subject2;
+}
