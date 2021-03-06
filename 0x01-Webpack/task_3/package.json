@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "graphql": "^15.5.0",
     "jquery": "^3.6.0",
     "lodash": "^4.17.21"
   },
@@ -21,7 +22,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "start-dev": "webpack-dev-server --open"
+    "start-dev": "webpack serve"
   },
   "keywords": [],
   "author": "",
