@@ -36,6 +36,10 @@
     ]
   },
   "devDependencies": {
-    "enzyme": "^3.11.0"
+    "chai": "^4.3.3",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "mocha": "^8.3.1",
+    "sinon": "^9.2.4"
   }
 }

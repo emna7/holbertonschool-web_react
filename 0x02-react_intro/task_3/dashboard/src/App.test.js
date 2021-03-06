@@ -1,19 +1,30 @@
+import React from 'react';
+import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import App from './App';
 
-const wrapper = shallow(<App />);
-describe("App.test.js", () => {
-  it('Correct component rendering', () => {
-    shallow(<App />);
-  });
+describe("Testing the <App /> Component", () => {
 
-  it('renders App-header', () => {
-    expect(wrapper.find('div.App-header').exists()).toEqual(true);
-  });
-  it('renders App-body', () => {
-    expect(wrapper.find('div.App-body').exists()).toEqual(true);
-  });
-  it('renders App-footer', () => {
-    expect(wrapper.find('div.App-footer').exists()).toEqual(true);
-  });
+	let wrapper;
+
+	beforeEach(() => {
+		wrapper = shallow(<App />);
+	});
+
+	it("<App /> is rendered without crashing", () => {
+		expect(wrapper).to.not.be.an('undefined');
+	});
+
+	it("<App /> renders a div with the class App-header", () => {
+		expect(wrapper.find('.App-header')).to.have.lengthOf(1);
+	});
+
+	it("<App /> renders a div with the class App-body", () => {
+		expect(wrapper.find('.App-body')).to.have.lengthOf(1);
+	});
+
+	it("<App /> renders a div with the class App-footer", () => {
+		expect(wrapper.find('.App-footer')).to.have.lengthOf(1);
+	});
+
 });
