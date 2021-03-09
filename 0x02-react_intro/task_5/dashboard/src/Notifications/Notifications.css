@@ -1,0 +1,21 @@
+.Notifications {
+  padding: 30px 5px;
+  border: 1px solid #E0354B;
+  border-style: dashed;
+  margin-bottom: 20px;
+}
+
+#root-notifications {
+  padding: 5px;
+}
+.Notifications > p:first-of-type {
+  padding-bottom: 10px;
+}
+
+li[data-priority="default"] {
+  color: #1d0563;
+}
+
+li[data-priority="urgent"] {
+  color: #ff0200;
+}
