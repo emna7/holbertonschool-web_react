@@ -1,0 +1,4 @@
+mosule.exports = {
+	App: {},
+	Notifications: {}
+};
