@@ -8,7 +8,7 @@ import Login from '../Login/Login';
 import Footer from '../Footer/Footer';
 import Notifications from '../Notifications/Notifications';
 import CourseList from '../CourseList/CourseList';
-
+import PropTypes from 'prop-types';
 configure({adapter: new Adapter()});
 
 describe('Test App.js', () => {

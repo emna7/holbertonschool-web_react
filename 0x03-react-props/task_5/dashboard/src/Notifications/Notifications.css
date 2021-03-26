@@ -1,0 +1,19 @@
+:root {
+  --color-white: #fff;
+  --color-hb: #e1354b;
+  --color-blue: #0000ff;
+  --color-red: #ff0000;
+}
+
+.Notifications {
+  border: 3px dashed #e1354b;
+  padding: 1rem;
+}
+
+ul li[data-priority='default'] {
+  color: var(--color-blue);
+}
+
+ul li[data-priority='urgent'] {
+  color: var(--color-red);
+}

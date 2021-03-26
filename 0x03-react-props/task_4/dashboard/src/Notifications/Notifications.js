@@ -1,4 +1,5 @@
 import React from 'react';
+import { Component, Fragment } from 'react';
 import './Notifications.css';
 import closeIcon from '../assets/close-icon.png';
 import { getLatestNotification } from '../utils/utils';
@@ -66,7 +67,7 @@ class Notifications extends Component {
 	};
 };
 
-Notifications.protoTypes = {
+Notifications.ProtoTypes = {
 	displayDrawer: PropTypes.bool,
 };
 

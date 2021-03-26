@@ -30,8 +30,8 @@ class NotificationItem extends Component {
 	};
 };
 
-NotificationItem.propTypes = {
-	html: Proptypes.shape({
+NotificationItem.PropTypes = {
+	html: PropTypes.shape({
 		_html: PropTypes.string,
 	}),
 	type: PropTypes.string.isRequired,
