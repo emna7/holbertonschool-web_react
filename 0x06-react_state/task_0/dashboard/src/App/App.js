@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
-import { css, StyleSheet } from 'aphrodite';
+import { StyleSheet, css } from 'aphrodite';
+
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Login from '../Login/Login';
@@ -25,6 +26,7 @@ class App extends Component {
   handleHideDrawer() {
     this.setState({displayDrawer: false});
 }
+
 
   componentDidMount() {
       window.addEventListener("keydown", this.handleLogout);
@@ -63,11 +65,11 @@ class App extends Component {
 
     return (
       <Fragment>
-        <Notifications
-          listNotifications={listNotifications}
-          displayDrawer={this.state.displayDrawer}
-          handleDisplayDrawer={this.handleDisplayDraawer}
-          handleHideDrawer={this.handleHideDrawer}
+        <Notifications 
+        listNotifications={listNotifications}
+        displayDrawer={this.state.displayDrawer}
+        handleDisplayDrawer={this.handleDisplayDrawer}
+        handleHideDrawer={this.handleHideDrawer} 
         />
         <div className={css(styles['sans-serif'])}>
           <Header />
@@ -84,8 +86,9 @@ class App extends Component {
                 )}
                 <BodySection title='News from the School'>
                   <p>
-                    Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    A paragraph with some random text. A paragraph with some random text.
+                    A paragraph with some random text. A paragraph with some random text.
+                    A paragraph with some random text. A paragraph with some random text.
                   </p>
                 </BodySection>
               </div>
@@ -96,15 +99,6 @@ class App extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  'sans-serif': {
-    fontFamily: 'sans-serif'
-  },
-  padding:{
-    padding: '5rem'
-  }
-});
-
 App.propTypes = {
   isLoggedIn: PropTypes.bool,
   logOut: PropTypes.func
@@ -114,5 +108,19 @@ App.defaultProps = {
   isLoggedIn: false,
   logOut: () => undefined
 };
+
+const styles = StyleSheet.create({
+  'sans-serif': {
+    fontFamily: 'sans-serif'
+  },
+  padding: {
+    '@media (min-width: 901px)': {
+      padding: '4rem'
+    },
+    '@media (max-width: 900px)': {
+      padding: '2rem 2rem 50px 2rem'
+    }
+  }
+});
 
 export default App;
