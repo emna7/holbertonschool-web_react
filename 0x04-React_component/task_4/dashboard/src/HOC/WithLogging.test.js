@@ -1,0 +1,33 @@
+import React from 'react';
+import { expect } from 'chai';
+import WithLogging from './WithLogging';
+import Login from '../Login/Login';
+import { shallow, configure, mount } from 'enzyme';
+
+describe('Test WithLogging.js', () => {
+  it('console.log was called on mount and on unmount with Component when the wrapped element is pure html', (done) => {
+    const WrapElement = WithLogging(() => <a></a>);
+    console.log = jest.fn();
+    const wrapper = mount(<WrapElement />);
+    expect(console.log).toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith('Component Component is mounted');
+
+    wrapper.unmount();
+    expect(console.log).toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith('Component Component is going to unmount');
+    done();
+  });
+
+  it('console.log was called on mount and on unmount with the name of the component when the wrapped element is the Login component. ', (done) => {
+    const WrapElement = WithLogging(Login);
+    console.log = jest.fn();
+    const wrapper = mount(<WrapElement />);
+    expect(console.log).toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith('Component Login is mounted');
+
+    wrapper.unmount();
+    expect(console.log).toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith('Component Login is going to unmount');
+    done();
+  });
+});
