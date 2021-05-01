@@ -1,0 +1,31 @@
+import React from 'react';
+import Adapter from 'enzyme-adapter-react-16';
+import { shallow, configure } from 'enzyme';
+import { expect } from 'chai';
+import App from '../App/App';
+import Login from './Login'
+import { StyleSheetTestUtils } from 'aphrodite';
+
+configure({adapter: new Adapter()});
+
+StyleSheetTestUtils.suppressStyleInjection();
+
+describe('Testing Login.js', () => {
+  it('Login without crashing', (done) => {
+    expect(shallow(<Login />).exists());
+    done();
+  });
+
+  it('div with the class App-body', (done) => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.contains(<body className='App-body' />))
+    done();
+  });
+
+  it('renders 2 inputs and 2 labels', (done) => {
+    const wrapper = shallow(<Login />);
+    expect(wrapper.find('input')).to.have.lengthOf(2);
+    expect(wrapper.find('label')).to.have.lengthOf(2);
+    done();
+  });
+});
