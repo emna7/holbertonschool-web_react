@@ -1,28 +1,26 @@
-import React from 'react';
+import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { shallow, configure } from 'enzyme';
-import { expect } from 'chai';
-import App from '../App/App';
-import Login from './Login'
 
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
+import Enzyme from 'enzyme';
 
-describe('Testing Login.js', () => {
-  it('Login without crashing', (done) => {
-    expect(shallow(<Login />).exists());
-    done();
-  });
+import React from 'react';
+import { shallow } from 'enzyme';
+import Login from './Login.js';
 
-  it('div with the class App-body', (done) => {
-    const wrapper = shallow(<App />);
-    expect(wrapper.contains(<body className='App-body' />))
-    done();
-  });
-
-  it('renders 2 inputs and 2 labels', (done) => {
+it("shouled renders Login componet without crashing", () => {
     const wrapper = shallow(<Login />);
-    expect(wrapper.find('input')).to.have.lengthOf(2);
-    expect(wrapper.find('label')).to.have.lengthOf(2);
-    done();
-  });
+    expect(wrapper.exists());
+});
+
+it("shouled login render two input tags", () => {
+    const wrapper = shallow(<Login />);
+    expect(wrapper.find("input")).toHaveLength(2);
+    
+});
+
+it("shouled login render two label tags", () => {
+    const wrapper = shallow(<Login />);
+    expect(wrapper.find("label")).toHaveLength(2);
+    
 });

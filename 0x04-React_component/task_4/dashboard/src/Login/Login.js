@@ -1,22 +1,19 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import './Login.css';
 
-class Login extends React.Component {
-	render () {
-		return (
-			<Fragment>
-				<div className="Login-body">
-					<p>Login to access the full dashboard</p>
-					<label htmlFor="email">Email: </label>
-					<input type="email" id="email" name="email" />
-					<label htmlFor="password">Password: </label>
-					<input type="password" id="password" name="password" />
-					<button>OK</button>
-				</div>
-			</Fragment>
-		);
-	}
-}
-
-export default Login;
-
+const Login = () => {
+    return (
+      <Fragment>
+        <p>Log in to access the full dashboard</p>
+        <label htmlFor='email'>Email:</label>
+        <input type='email' name='email' id='email' />
+  
+        <label htmlFor='password'>Password:</label>
+        <input type='password' name='password' id='password' />
+  
+        <button>OK</button>
+      </Fragment>
+    );
+  };
+  
+  export default Login;
