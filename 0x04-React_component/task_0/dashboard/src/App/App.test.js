@@ -1,48 +1,63 @@
-import React from 'react';
-import { expect } from 'chai';
+import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { shallow, configure } from 'enzyme';
-import App from './App';
+import React from "react";
+import { shallow } from "enzyme";
+import App from "./App";
 import Header from '../Header/Header';
 import Login from '../Login/Login';
 import Footer from '../Footer/Footer';
 import Notifications from '../Notifications/Notifications';
+import Enzyme from 'enzyme';
+import { expect } from 'chai';
 import CourseList from '../CourseList/CourseList';
 
-configure({adapter: new Adapter()});
+configure({ adapter:new Adapter() });
 
-describe("Testing the <App /> Component", () => {
-	
-	let wrapper;
+it("should renders without crashing", () => {
+  const wrapper = shallow(<App />);
+  expect(wrapper.exists());
+});
 
-	beforeEach(() => {
-		wrapper = shallow(<App />);
-	});
+it("shouled contains Notification component", () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.contains(<Notifications />)).equal(false);
+});
 
-	it("<App /> is rendered without crashing", () => {
-		expect(wrapper).to.not.be.an('undefined');
-	});
+it("shouled contains Header component", () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.contains(<Header />)).equal(true);
+});
 
-	it("<App /> contains the <Notifications /> Component", () => {
-		expect(wrapper.find(Notifications)).to.have.lengthOf(1);
-	});
+it("shouled contains Login component", () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.contains(<Login />)).equal(true);
+});
 
-	it("<App /> contains the <Header /> Component", () => {
-		expect(wrapper.contains(<Header />)).to.equal(true);
-	});
+it("shouled contains Footer component", () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.contains(<Footer />)).equal(true);
+});
 
-	it("<App /> contains the <Login /> Component", () => {
-		expect(wrapper.contains(<Login />)).to.equal(true);
-	});
+it("shouled not display CourseList", () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.contains(<CourseList />)).equal(false);
+});
 
-	it("<App /> contains the <Footer /> Component", () => {
-		expect(wrapper.contains(<Footer />)).to.equal(true);
-	});
-
-	it("<App /> doesn't contain <CourseList />", () => {
-		expect(wrapper.find(CourseList)).to.have.lengthOf(0);
-	});
-
+describe("when the isLoggedIn is true The first one should verify that the Login component is not included. The second one should verify that the CourseList component is included", () => {
+    it("shouled not include Login", () => {
+        const props = {
+            isLoggedIn: true,
+        };
+        const wrapper = shallow(<App {...props}/>);
+        expect(wrapper.contains(<Login />)).equal(false);
+    });
+    it("shouled include CourseListe", () => {
+        const props = {
+            isLoggedIn: true,
+        };
+        const wrapper = shallow(<App {...props}/>);
+        expect(wrapper.contains(<CourseList />)).equal(false);
+    });
 });
 
 describe("Testing the <App /> when isLoggedIn is true", () => {

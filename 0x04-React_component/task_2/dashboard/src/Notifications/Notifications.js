@@ -1,8 +1,6 @@
-import React from 'react';
-import { Component, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import './Notifications.css';
 import closeIcon from '../assets/close-icon.png';
-import { getLatestNotification } from '../utils/utils';
 import NotificationItem from './NotificationItem';
 import PropTypes from 'prop-types';
 import NotificationItemShape from './NotificationItemShape';
@@ -20,6 +18,7 @@ class Notifications extends Component {
 	render() {
 		let {
 			displayDrawer,
+			listNotifications,
 		} = this.props;
 
 		return (
@@ -88,7 +87,7 @@ class Notifications extends Component {
 	};
 };
 
-Notifications.protoTypes = {
+Notifications.propTypes = {
 	displayDrawer: PropTypes.bool,
 	listNotifications: PropTypes.arrayOf(NotificationItemShape),
 };

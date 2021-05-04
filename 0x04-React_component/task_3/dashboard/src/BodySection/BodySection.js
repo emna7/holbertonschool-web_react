@@ -17,4 +17,8 @@ BodySection.propTypes = {
 	children: PropTypes.node
 }
 
+BodySection.defaultProps = {
+	title: "",
+}
+
 export default BodySection;

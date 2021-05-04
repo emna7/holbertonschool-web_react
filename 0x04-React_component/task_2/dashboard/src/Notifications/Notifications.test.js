@@ -105,7 +105,6 @@ describe("Testing the <Notifications /> wrapperTwo", () => {
 		const log = jest.spyOn(console, 'log');
 		const wrapper = shallow(<Notifications />);
 		wrapper.instance().markAsRead(666);
-		// expect(log).to.have.been.calledWith('Notification 666 has been marked as read');
 	});
-
+	
 });
