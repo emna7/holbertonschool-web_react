@@ -1,63 +1,42 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import { StyleSheetTestUtils } from 'aphrodite';
+import Login from "./Login.js";
+import React from "react";
+import Enzyme from "enzyme";
+import { shallow } from "enzyme";
+import { expect } from "chai";
+import Adapter from "enzyme-adapter-react-16";
+import { StyleSheetTestUtils } from "aphrodite";
 
-import Login from './Login';
-
-describe('Login', () => {
+Enzyme.configure({ adapter: new Adapter() });
+describe("<Login />", () => {
   beforeEach(() => {
     StyleSheetTestUtils.suppressStyleInjection();
   });
 
   afterEach(() => {
     StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+    jest.useFakeTimers();
+    jest.runAllTimers();
   });
 
-  test('renders without crashing', () => {
+  it("Test 1 <Login /> renders without crashing", () => {
     const wrapper = shallow(<Login />);
-
-    expect(wrapper.exists()).toBe(true);
+    expect(wrapper.exists());
+    // or : expect(wrapper.render()).to.not.be.an('undefined');
   });
 
-  test('renders three input tags', () => {
+  it("Test 3 <Login /> render 2 labels", () => {
     const wrapper = shallow(<Login />);
-
-    const inputs = wrapper.find('input');
-    const labels = wrapper.find('label');
-
-    expect(inputs.length).toBe(3);
-    expect(labels.length).toBe(2);
+    expect(wrapper.find("label")).to.have.lengthOf(2);
   });
-
-  test('submit is disabled by default', () => {
+  it("Test 4 component renders 2 input tags and 2 label tags", () => {
     const wrapper = shallow(<Login />);
-    const submit = wrapper.find('[data-testid="submit"]');
-
-    expect(submit.length).toBe(1);
-    expect(submit.props()).toHaveProperty('disabled', true);
+    expect(wrapper.find("label").length).equal(2);
+    expect(wrapper.find("input").length).equal(3);
   });
-
-  test('submit is enabled when inputs are not empty', () => {
+  it("Test 5 submit button is disabled by default", () => {
     const wrapper = shallow(<Login />);
-    const email = wrapper.find('input#email');
-    const password = wrapper.find('input#password');
-    let submit = wrapper.find('[data-testid="submit"]');
+    const sub = wrapper.find("form input[type='submit']");
 
-    expect(email.length).toBe(1);
-    expect(password.length).toBe(1);
-    expect(submit.length).toBe(1);
-
-    expect(wrapper.state()).toHaveProperty('enableSubmit', false);
-    expect(submit.props()).toHaveProperty('disabled', true);
-
-    email.simulate('change', { target: { value: 'juno@domain.tld' } });
-    expect(wrapper.state()).toHaveProperty('enableSubmit', false);
-    submit = wrapper.find('[data-testid="submit"]');
-    expect(submit.props()).toHaveProperty('disabled', true);
-
-    password.simulate('change', { target: { value: 'dime' } });
-    expect(wrapper.state()).toHaveProperty('enableSubmit', true);
-    submit = wrapper.find('[data-testid="submit"]');
-    expect(submit.props()).toHaveProperty('disabled', false);
+    expect(sub.prop("disabled")).equal(true);
   });
 });

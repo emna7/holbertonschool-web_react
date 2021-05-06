@@ -1,113 +1,89 @@
-import React from 'react';
-import { mount } from 'enzyme';
-import { StyleSheetTestUtils } from 'aphrodite';
+import Header from "./Header.js";
+import React from "react";
+import Enzyme from "enzyme";
+import { shallow, mount } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+import { StyleSheetTestUtils } from "aphrodite";
+import AppContext, { user, logOut } from "../App/AppContext";
 
-import Header from './Header';
-
-import AppContext from '../App/AppContext';
-
-describe('Header', () => {
+Enzyme.configure({ adapter: new Adapter() });
+describe("<Header />", () => {
   beforeEach(() => {
     StyleSheetTestUtils.suppressStyleInjection();
   });
 
   afterEach(() => {
     StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+    jest.useFakeTimers();
+    jest.runAllTimers();
+  });
+  const wrapper = shallow(
+    <AppContext.Provider value={{ user, logOut }}>
+      <Header />
+    </AppContext.Provider>
+  );
+  it("Test 1 renders without crashing", () => {
+    shallow(
+      <AppContext.Provider value={{ user, logOut }}>
+        <Header />
+      </AppContext.Provider>
+    );
+
+    expect(wrapper.exists());
+  });
+  it("Test 2 img ", () => {
+    const wrapper = mount(
+      <AppContext.Provider value={{ user, logOut }}>
+        <Header />
+      </AppContext.Provider>
+    );
+    expect(wrapper.find("img").length).toEqual(1);
+  });
+  it("Test 3 h1", () => {
+    const wrapper = mount(
+      <AppContext.Provider value={{ user, logOut }}>
+        <Header />
+      </AppContext.Provider>
+    );
+    expect(
+      wrapper.containsMatchingElement(<h1>School dashboard</h1>)
+    ).toBeTruthy();
+  });
+  it("Test 4 logoutSection is created", () => {
+    const wrapper = mount(
+      <AppContext.Provider
+        value={{ user: { ...user, isLoggedIn: true }, logOut }}
+      >
+        <Header />
+      </AppContext.Provider>
+    );
+
+    expect(wrapper.find("#logoutSection")).toHaveLength(1);
   });
 
-  test('renders without crashing', () => {
-    const wrapper = mount(<Header />, {
-      context: {
-        user: {
-          email: '',
-          password: '',
-          isLoggedIn: false
-        },
-        logOut: () => {}
-      }
-    });
+  it("Test 5 logoutSection disappears when the logout function is called", () => {
+    let logOutSpy = jest.fn();
 
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  test('renders an image and h1', () => {
-    const wrapper = mount(<Header />, {
-      context: {
-        user: {
-          email: '',
-          password: '',
-          isLoggedIn: false
-        },
-        logOut: () => {}
-      }
-    });
-
-    const image = wrapper.find('img');
-    const h1 = wrapper.find('h1');
-
-    expect(image.exists()).toBe(true);
-    expect(h1.exists()).toBe(true);
-  });
-
-  test('logoutSection not created if isLoggedIn is false', () => {
-    const wrapper = mount(<Header />, {
-      context: {
-        user: {
-          email: '',
-          password: '',
-          isLoggedIn: false
-        },
-        logOut: () => {}
-      }
-    });
-
-    const logout = wrapper.find('#logoutSection');
-
-    expect(logout.length).toBe(0);
-  });
-
-  test('logoutSection created if isLoggedIn is true', () => {
     const wrapper = mount(
       <AppContext.Provider
         value={{
           user: {
-            email: 'juno@domain.tld',
-            password: 'gecgecgec',
-            isLoggedIn: true
+            email: "test@hotmail.com",
+            password: "9876",
+            isLoggedIn: true,
           },
-          logOut: () => {}
+          logOut: logOutSpy,
         }}
       >
         <Header />
       </AppContext.Provider>
     );
 
-    const logout = wrapper.find('#logoutSection');
+    expect(wrapper.find("#logoutSection")).toHaveLength(1);
+    wrapper.find("span").simulate("click");
 
-    expect(logout.length).toBe(1);
-  });
+    expect(logOutSpy).toHaveBeenCalled();
 
-  test('clicking logout link calls logOut', () => {
-    const logOut = jest.fn();
-    const wrapper = mount(
-      <AppContext.Provider
-        value={{
-          user: {
-            email: 'juno@domain.tld',
-            password: 'gecgecgec',
-            isLoggedIn: true
-          },
-          logOut
-        }}
-      >
-        <Header />
-      </AppContext.Provider>
-    );
-
-    const logout = wrapper.find('em');
-    expect(logout.length).toBe(1);
-
-    logout.simulate('click');
-    expect(logOut).toHaveBeenCalledTimes(1);
+    jest.restoreAllMocks();
   });
 });

@@ -1,51 +1,25 @@
-import React from 'react';
-import { shallow, mount } from 'enzyme';
-import { StyleSheetTestUtils } from 'aphrodite';
+import Footer from "./Footer.js";
+import React from "react";
+import { expect } from "chai";
+import Adapter from "enzyme-adapter-react-16";
+import Enzyme from "enzyme";
+import { shallow, configure } from "enzyme";
+import AppContext from "../App/AppContext";
+import { user, logOut } from "../App/AppContext";
 
-import Footer from './Footer';
-
-import AppContext from '../App/AppContext';
-
-describe('Footer', () => {
-  beforeEach(() => {
-    StyleSheetTestUtils.suppressStyleInjection();
-  });
-
-  afterEach(() => {
-    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-  });
-
-  test('renders without crashing', () => {
+Enzyme.configure({ adapter: new Adapter() });
+describe("<Footer />", () => {
+  it("Test 1 <Footer /> renders without crashing", () => {
     const wrapper = shallow(<Footer />);
-
-    expect(wrapper.exists()).toBe(true);
+    expect(wrapper.exists());
   });
 
-  test('copy text contains at least "Copyright"', () => {
-    const wrapper = mount(<Footer />);
-    const p = wrapper.find('p');
-
-    const re = /Copyright/;
-
-    expect(re.test(wrapper.text())).toBe(true);
-  });
-
-  test('contact link not shown if user is not logged in', () => {
-    const wrapper = shallow(<Footer />);
-    const contact = wrapper.find('[data-testid="contact"]');
-
-    expect(contact.length).toBe(0);
-  });
-
-  test('contact link shown if user is logged in', () => {
-    const wrapper = mount(
-      <AppContext.Provider value={{ user: { isLoggedIn: true } }}>
+  it("logged out within the context", () => {
+    const wrapper = shallow(
+      <AppContext.Provider value={{ user, logOut }}>
         <Footer />
       </AppContext.Provider>
     );
-
-    const contact = wrapper.find('[data-testid="contact"]');
-
-    expect(contact.length).toBe(1);
+    expect(wrapper.find("footer a"));
   });
 });

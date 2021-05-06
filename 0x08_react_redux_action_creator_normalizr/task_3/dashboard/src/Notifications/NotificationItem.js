@@ -1,57 +1,67 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import { StyleSheet, css } from "aphrodite";
 
 class NotificationItem extends PureComponent {
   render() {
-    const { id, type, html, value, markAsRead } = this.props;
+    const { id, type, value, html, markAsRead } = this.props;
+    let liStyle = css(type === "urgent" ? styles.urgent : styles.default);
 
-    return html === undefined ? (
-      <li
-        className={css(styles[type], styles.small)}
-        data-notification-type={type}
-        onClick={() => markAsRead(id)}
-      >
-        {value}
-      </li>
-    ) : (
-      <li
-        className={css(styles[type], styles.small)}
-        data-notification-type={type}
-        dangerouslySetInnerHTML={html}
-        onClick={() => markAsRead(id)}
-      ></li>
-    );
+    if (html === undefined)
+      return (
+        <li
+          className={liStyle}
+          data-notification-type={type}
+          onClick={() => markAsRead(id)}
+        >
+          {value}
+        </li>
+      );
+    else
+      return (
+        <li
+          className={liStyle}
+          data-notification-type={type}
+          dangerouslySetInnerHTML={html}
+        ></li>
+      );
   }
 }
 
 NotificationItem.propTypes = {
-  id: PropTypes.number.isRequired,
-  type: PropTypes.string,
-  html: PropTypes.shape({ __html: PropTypes.string }),
+  html: PropTypes.shape({
+    __html: PropTypes.string,
+  }),
+  type: PropTypes.string.isRequired,
   value: PropTypes.string,
-  markAsRead: PropTypes.func
+  id: PropTypes.number,
+  markAsRead: PropTypes.func,
 };
 
 NotificationItem.defaultProps = {
-  type: 'default',
-  value: '',
-  markAsRead: () => {}
+  type: "default",
+  markAsRead: () => {},
 };
-
 const styles = StyleSheet.create({
   default: {
-    color: 'blue'
+    color: "blue",
+    padding: "10px 8px",
+    "@media (max-width: 900px)": {
+      width: "100%",
+      fontSize: "20px",
+      borderBottom: "1px solid black",
+    },
   },
+
   urgent: {
-    color: 'red'
+    color: "red",
+    padding: "10px 8px",
+    "@media (max-width: 900px)": {
+      width: "100%",
+      fontSize: "20px",
+      borderBottom: "1px solid black",
+    },
   },
-  small: {
-    '@media (max-width: 900px)': {
-      borderBottom: '1px solid black',
-      padding: '10px 8px'
-    }
-  }
 });
 
 export default NotificationItem;

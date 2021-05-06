@@ -1,71 +1,89 @@
-import React, { Fragment, PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite';
-
-import closeIcon from '../assets/close-icon.png';
-
-import NotificationItem from './NotificationItem';
-import NotificationItemShape from './NotificationItemShape';
+import React, { Component, Fragment, PureComponent } from "react";
+import closeIcon from "../assets/close-icon.png";
+import { getLatestNotification } from "../utils/utils";
+import { StyleSheet, css } from "aphrodite";
+import NotificationItem from "./NotificationItem.js";
+import PropTypes from "prop-types";
+import NotificationItemShape from "./NotificationItemShape";
 
 class Notifications extends PureComponent {
+  constructor(props) {
+    super(props);
+    //this.markAsRead = this.markAsRead.bind(this);
+  }
+  /*
+  shouldComponentUpdate(nextProps) {
+    const { listNotifications, displayDrawer } = this.props;
+    // returns true render will be invoked
+    return (
+      listNotifications.length < nextProps.listNotifications.length ||
+      nextProps.displayDrawer !== displayDrawer
+    );
+  }
+
+  markAsRead(id) {
+    console.log(`Notification ${id} has been marked as read`);
+  }
+  */
+
   render() {
     const {
-      listNotifications,
       displayDrawer,
+      listNotifications,
       handleDisplayDrawer,
       handleHideDrawer,
-      markNotificationAsRead
+      markNotificationAsRead,
     } = this.props;
 
     return (
-      <div className={css(styles.wrapper)} data-testid='wrapper'>
+      <div className="NotificationsComponent">
         <div
-          className={css(styles.div, styles['menu-item'])}
-          data-testid='menu-item'
+          className={css(styles.menuItem)}
+          id="menuItem"
           onClick={handleDisplayDrawer}
         >
-          Your Notifications
+          Your notifications
         </div>
         {displayDrawer && (
-          <div className={css(styles.div, styles.notifs)} data-testid='notifs'>
-            {listNotifications.length ? (
-              <Fragment>
-                <p>Here is the list of notifications</p>
-                <ul className={css(styles.list)}>
-                  {listNotifications.map(({ id, type, value, html }) => (
-                    <NotificationItem
-                      key={id}
-                      id={id}
-                      type={type}
-                      value={value}
-                      html={html}
-                      markAsRead={markNotificationAsRead}
-                    />
-                  ))}
-                </ul>
-              </Fragment>
-            ) : (
-              <p>No new notifications for now</p>
-            )}
+          <div className={css(styles.Notifications)}>
             <button
-              style={{
-                position: 'absolute',
-                top: '10px',
-                right: '10px',
-                border: 'none',
-                backgroundColor: 'transparent',
-                cursor: 'pointer'
-              }}
-              aria-label='Close'
+              id="close"
               onClick={handleHideDrawer}
-              data-testid='close-notifs'
+              style={{
+                float: "right",
+                postion: "relative",
+                top: "-40",
+                background: "none",
+                border: "none",
+              }}
+              aria-label="Close"
+              onClick={handleHideDrawer}
             >
-              <img
-                src={closeIcon}
-                alt='Close'
-                style={{ height: '20px', width: '20px' }}
-              />
+              <img src={closeIcon} alt="close-icon" width="20px" />
             </button>
+            {listNotifications.length === 0 && (
+              <p>No new notification for now</p>
+            )}
+            {listNotifications.length > 0 && (
+              <Fragment>
+                <div className={css(styles.notificationBox)}>
+                  <p>Here is the list of notifications</p>
+                  <ul>
+                    {listNotifications.map((notif) => {
+                      return (
+                        <NotificationItem
+                          key={notif.id}
+                          type={notif.type}
+                          value={notif.value}
+                          html={notif.html}
+                          markAsRead={markNotificationAsRead}
+                        />
+                      );
+                    })}
+                  </ul>
+                </div>
+              </Fragment>
+            )}
           </div>
         )}
       </div>
@@ -73,92 +91,76 @@ class Notifications extends PureComponent {
   }
 }
 
+const opacityFrames = {
+  "0%": {
+    opacity: 0.5,
+  },
+  "50%": {
+    opacity: 0.75,
+  },
+  "100%": {
+    opacity: 1,
+  },
+};
+
+const bounceFrames = {
+  "0%": {
+    transform: "translateY(0)",
+  },
+  "50%": {
+    transform: "translateY(-10px)",
+  },
+  "100%": {
+    transform: "translateY(0)",
+  },
+};
+
+const styles = StyleSheet.create({
+  Notifications: {
+    border: "2px solid #e1484c",
+    borderStyle: "dashed",
+    padding: "10px",
+    textAlign: "left",
+    position: "relative",
+    marginTop: "12px",
+    fontSize: "20px",
+    "@media (max-width: 900px)": {
+      position: "absolute !important",
+      top: "0",
+      right: "0",
+      left: "0",
+      background: "white",
+    },
+  },
+  menuItem: {
+    textAlign: "right",
+    fontWeight: "bold",
+    fontFamily: "none",
+    pointer: "cursor",
+    background: "#fff8f8",
+    ":hover": {
+      animationName: [opacityFrames, bounceFrames],
+      animationDuration: "1s, .5s",
+      animationIterationCount: "3",
+    },
+  },
+  notificationBox: {
+    marginRight: "60px",
+  },
+});
+
 Notifications.propTypes = {
-  displayDrawer: PropTypes.bool.isRequired,
+  displayDrawer: PropTypes.bool,
   listNotifications: PropTypes.arrayOf(NotificationItemShape),
   handleDisplayDrawer: PropTypes.func,
   handleHideDrawer: PropTypes.func,
-  markNotificationAsRead: PropTypes.func
+  markNotificationAsRead: PropTypes.func,
 };
-
 Notifications.defaultProps = {
   displayDrawer: false,
   listNotifications: [],
   handleDisplayDrawer: () => {},
   handleHideDrawer: () => {},
-  markNotificationAsRead: () => {}
+  markNotificationAsRead: () => {},
 };
-
-const opacityKeyframes = {
-  from: {
-    opacity: '0.5'
-  },
-  to: {
-    opacity: '1'
-  }
-};
-
-const bounceKeyframes = {
-  '0%': {
-    transform: 'translateY(0px)'
-  },
-  '50%': {
-    transform: 'translateY(-5px)'
-  },
-  '100%': {
-    transform: 'translateY(5px)'
-  }
-};
-
-const styles = StyleSheet.create({
-  div: {
-    padding: '1rem',
-    position: 'relative',
-    margin: '0.5rem',
-    '@media (max-width: 900px)': {
-      padding: '0'
-    }
-  },
-  notifs: {
-    border: '1px dashed #e1354b',
-    marginTop: '0',
-    backgroundColor: 'white',
-    '@media (max-width: 900px)': {
-      width: '95vw',
-      height: '95vh',
-      margin: '0',
-      zIndex: '10',
-      border: '1px solid lightgray',
-      fontSize: '20px'
-    }
-  },
-  'menu-item': {
-    marginBottom: 0,
-    '@media (max-width: 900px)': {
-      display: 'none'
-    },
-    ':hover': {
-      cursor: 'pointer',
-      animationName: [opacityKeyframes, bounceKeyframes],
-      animationDuration: '1s, 0.5s',
-      animationIterationCount: '3, 3',
-      animationTimingFunction: 'ease, ease'
-    }
-  },
-  wrapper: {
-    position: 'absolute',
-    right: '12px',
-    display: 'flex',
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    alignItems: 'flex-end'
-  },
-  list: {
-    '@media (max-width: 900px)': {
-      listStyleType: 'none',
-      paddingLeft: '0'
-    }
-  }
-});
-
 export default Notifications;

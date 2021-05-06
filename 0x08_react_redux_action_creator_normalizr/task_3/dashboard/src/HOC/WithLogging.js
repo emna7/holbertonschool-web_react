@@ -1,33 +1,33 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+// High-Order Component (HOC)
+// Takes component as argument
 
-const WithLogging = (WrappedComponent) => {
+function WithLogging(Comp) {
+  // And returns another component
   return class extends Component {
-    static displayName = `WithLogging(${
-      WrappedComponent.displayName || 'Component'
-    })`;
-
     constructor(props) {
       super(props);
+      this.displayName = Comp.name
+        ? `WithLogging(${Comp.name})`
+        : `WithLogging(Component)`;
     }
 
     componentDidMount() {
       console.log(
-        `Component ${WrappedComponent.displayName || 'Component'} is mounted`
+        `Component ${Comp.name ? Comp.name : "Component"} is mounted`
       );
     }
 
     componentWillUnmount() {
       console.log(
-        `Component ${
-          WrappedComponent.displayName || 'Component'
-        } is going to unmount`
+        `Component ${Comp.name ? Comp.name : "Component"} is going to unmount`
       );
     }
 
     render() {
-      return <WrappedComponent {...this.props} />;
+      return <Comp {...this.props} />;
     }
   };
-};
+}
 
 export default WithLogging;

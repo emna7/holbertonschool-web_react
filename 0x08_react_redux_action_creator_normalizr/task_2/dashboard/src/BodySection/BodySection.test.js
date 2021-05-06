@@ -1,24 +1,25 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import React from "react";
+import { expect } from "chai";
+import { shallow, configure } from "enzyme";
+import BodySection from "./BodySection.js";
+import Adapter from "enzyme-adapter-react-16";
 
-import BodySection from './BodySection';
+configure({
+  adapter: new Adapter(),
+});
 
-describe('BodySection', () => {
-  test('should properly render children', () => {
+describe("<BodySection /> Component", () => {
+  it("Test 1 Renders the correct children", () => {
     const wrapper = shallow(
-      <BodySection title='heading'>
-        <p>paragraph 0</p>
-        <p>paragraph 1</p>
+      <BodySection title="test title">
+        <p>test children node</p>
       </BodySection>
     );
-    const heading = wrapper.find('h2');
-    const p = wrapper.find('p');
-
-    expect(heading.length).toBe(1);
-    expect(heading.text()).toBe('heading');
-
-    expect(p.length).toBe(2);
-    expect(p.at(0).text()).toBe('paragraph 0');
-    expect(p.at(1).text()).toBe('paragraph 1');
+    expect(
+      wrapper.containsAllMatchingElements([
+        <h2>test title</h2>,
+        <p>test children node</p>,
+      ])
+    ).to.equal(true);
   });
 });

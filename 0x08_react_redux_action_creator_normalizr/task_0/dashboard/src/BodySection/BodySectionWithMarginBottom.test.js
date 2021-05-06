@@ -1,44 +1,46 @@
-import React from 'react';
-import { shallow, mount } from 'enzyme';
-import '@testing-library/react';
-import '@testing-library/jest-dom';
-import { StyleSheetTestUtils } from 'aphrodite';
+import React from "react";
+import { expect } from "chai";
+import { shallow, configure, mount } from "enzyme";
+import BodySectionWithMarginBottom from "./BodySectionWithMarginBottom.js";
+import BodySection from "./BodySection.js";
+import Adapter from "enzyme-adapter-react-16";
+import { StyleSheetTestUtils } from "aphrodite";
 
-import BodySectionWithMarginBottom from './BodySectionWithMarginBottom';
-import BodySection from './BodySection';
+configure({
+  adapter: new Adapter(),
+});
 
-describe('BodySectionWithMarginBottom', () => {
+describe("Testing component <BodySectionWithMarginBottom/>", () => {
   beforeEach(() => {
     StyleSheetTestUtils.suppressStyleInjection();
   });
 
   afterEach(() => {
     StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+    jest.useFakeTimers();
+    jest.runAllTimers();
   });
 
-  test('should properly render children', () => {
+  test("Test 1 renders the 'BodySection' Component correctly with children", () => {
     const wrapper = mount(
-      <BodySectionWithMarginBottom title='heading'>
-        <p>paragraph 0</p>
+      <BodySectionWithMarginBottom title="Title">
         <p>paragraph 1</p>
+        <p>paragraph 2</p>
       </BodySectionWithMarginBottom>
     );
-    const bodySection = wrapper.find(BodySection);
-    const heading = bodySection.find('h2');
-    const p = bodySection.find('p');
-
-    expect(heading.length).toBe(1);
-    expect(heading.text()).toBe('heading');
-
-    expect(p.length).toBe(2);
-    expect(p.at(0).text()).toBe('paragraph 0');
-    expect(p.at(1).text()).toBe('paragraph 1');
+    const BDComponent = wrapper.find(BodySection);
+    const h2 = BDComponent.find("h2");
+    const paragh = BDComponent.find("p");
+    expect(h2).to.have.lengthOf(1);
+    expect(h2.text()).to.equal("Title");
+    expect(paragh).to.have.lengthOf(2);
+    expect(paragh.at(0).text()).to.equal("paragraph 1");
+    expect(paragh.at(1).text()).to.equal("paragraph 2");
   });
 
-  test('should have correct style applied', () => {
-    const wrapper = mount(<BodySectionWithMarginBottom />);
-    const div = wrapper.find('div');
-
-    expect(div.at(0).debug().includes('className="margin_')).toBe(true);
+  test("Test 2 render with correct style", () => {
+    const wrapper1 = mount(<BodySectionWithMarginBottom />);
+    const wrapper2 = wrapper1.find(".bodySectionWithMargin");
+    expect(wrapper2.exists());
   });
 });

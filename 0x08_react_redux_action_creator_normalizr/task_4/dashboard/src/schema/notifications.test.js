@@ -1,42 +1,30 @@
-import getAllNotificationsByUser, { normalizedData } from './notifications';
-import { expect as expectChai } from 'chai';
+import { getAllNotificationsByUser, normalized } from "./notifications";
 
-var _ = require('lodash');
+describe("notifications", () => {
+  it("read data from a json", () => {
+    const data = [
+        {
+          guid: "2d8e40be-1c78-4de0-afc9-fcc147afd4d2",
+          isRead: true,
+          type: "urgent",
+          value:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+        },
+        {
+          guid: "280913fe-38dd-4abd-8ab6-acdb4105f922",
+          isRead: false,
+          type: "urgent",
+          value:
+            "Non diam phasellus vestibulum lorem sed risus ultricies. Tellus mauris a diam maecenas sed",
+        },
+      ],
+      allContext = getAllNotificationsByUser("5debd764a7c57c7839d722e9");
 
-describe('Test notifications.js', () => {
-  it('verify is using this id -> 5debd764a7c57c7839d722e9 return the correct value', (done) => {
-    const data = getAllNotificationsByUser('5debd764a7c57c7839d722e9');
-    const result = [
-      {
-        guid: "2d8e40be-1c78-4de0-afc9-fcc147afd4d2",
-        isRead: true,
-        type: "urgent",
-        value:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
-      },
-      {
-        guid: "280913fe-38dd-4abd-8ab6-acdb4105f922",
-        isRead: false,
-        type: "urgent",
-        value:
-          "Non diam phasellus vestibulum lorem sed risus ultricies. Tellus mauris a diam maecenas sed"
-      }
-    ];
-
-    expectChai(data.length).to.equal(result.length);
-    for(let i = 0; i < data.length; i++) {
-      const o1 = data[i];
-      const o2 = result[i];
-      expectChai(Object.keys(o1).length === Object.keys(o2).length && Object.keys(o1).every(p => o1[p] === o2[p])).to.equal(true);
-    }
-
-    expect(data).toEqual(expect.arrayContaining(result));
-    done();
+    expect(allContext).toEqual(expect.arrayContaining(data));
   });
 
-  it('Normalizr result array contain some ids', (done) => {
-    const data = normalizedData.result;
-    const result = [
+  it("normalized - result", () => {
+    const data = [
       "5debd76480edafc8af244228",
       "5debd764507712e7a1307303",
       "5debd76444dd4dafea89d53b",
@@ -50,45 +38,52 @@ describe('Test notifications.js', () => {
       "5debd764a4f11eabef05a81d",
       "5debd764af0fdd1fc815ad9b",
       "5debd76468cb5b277fd125f4",
-      "5debd764de9fa684468cdc0b"
+      "5debd764de9fa684468cdc0b",
     ];
-    expectChai(JSON.stringify(data) === JSON.stringify(result)).to.equal(true);
-    done();
+
+    const result = normalized.result;
+
+    expect(result).toEqual(expect.arrayContaining(data));
   });
 
-  it('Test to access the user with the id 5debd764a7c57c7839d722e9', (done) => {
-    const data = normalizedData.entities.users['5debd764a7c57c7839d722e9'];
-    const result = {
+  it("normalized - users", () => {
+    const data = {
       age: 25,
       email: "poole.sanders@holberton.nz",
       id: "5debd764a7c57c7839d722e9",
       name: { first: "Poole", last: "Sanders" },
-      picture: "http://placehold.it/32x32"
-    }
-    expectChai(_.isEqual(data, result)).to.equal(true);
-    done();
+      picture: "http://placehold.it/32x32",
+    };
+
+    const user = normalized.entities.users["5debd764a7c57c7839d722e9"];
+
+    expect(user).toEqual(data);
   });
 
-  it('Test to access the messages with the guid efb6c485-00f7-4fdf-97cc-5e12d14d6c41', (done) => {
-    const data = normalizedData.entities.messages['efb6c485-00f7-4fdf-97cc-5e12d14d6c41'];
-    const result = {
+  it("normalized - messages", () => {
+    const data = {
       guid: "efb6c485-00f7-4fdf-97cc-5e12d14d6c41",
       isRead: false,
       type: "default",
-      value: "Cursus risus at ultrices mi."
-    }
-    expectChai(_.isEqual(data, result)).to.equal(true);
-    done();
+      value: "Cursus risus at ultrices mi.",
+    };
+
+    const message =
+      normalized.entities.messages["efb6c485-00f7-4fdf-97cc-5e12d14d6c41"];
+
+    expect(message).toEqual(data);
   });
 
-  it('Test to access the notifications with the id 5debd7642e815cd350407777', (done) => {
-    const data = normalizedData.entities.notifications['5debd7642e815cd350407777'];
-    const result = {
+  it("normalized - notifications", () => {
+    const data = {
       author: "5debd764f8452ef92346c772",
       context: "3068c575-d619-40af-bf12-dece1ee18dd3",
-      id: "5debd7642e815cd350407777"
-    }
-    expectChai(_.isEqual(data, result)).to.equal(true);
-    done();
+      id: "5debd7642e815cd350407777",
+    };
+
+    const notification =
+      normalized.entities.notifications["5debd7642e815cd350407777"];
+
+    expect(notification).toEqual(data);
   });
 });

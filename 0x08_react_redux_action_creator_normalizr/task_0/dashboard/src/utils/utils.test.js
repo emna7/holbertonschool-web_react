@@ -1,21 +1,24 @@
-import { getFullYear, getFooterCopy, getLatestNotification } from './utils';
+import { getFooterCopy, getFullYear, getLatestNotification } from "./utils";
+import Enzyme from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
 
-describe('utils', () => {
-  test('getFullYear returns correct year', () => {
-    expect(getFullYear()).toBe(new Date().getFullYear());
+Enzyme.configure({ adapter: new Adapter() });
+
+describe;
+describe("Utils functions", () => {
+  test("getFullYear returns the correct year", () => {
+    expect(getFullYear()).toEqual(2021);
   });
 
-  test('getFooterCopy returns correct string if isIndex is true', () => {
-    expect(getFooterCopy(true)).toBe('Holberton School');
+  test("getFullYear returns the correct string when the argument is true ", () => {
+    expect(getFooterCopy(true)).toEqual("Holberton School");
   });
-
-  test('getFooterCopy returns correct string id isIndex is false', () => {
-    expect(getFooterCopy(false)).toBe('Holberton School Main Dashboard');
+  test("getFooterCopy returns the correct string when the argument is false", () => {
+    expect(getFooterCopy(false)).toEqual("Holberton School main dashboard");
   });
-
-  test('getLatestNotification returns correct string', () => {
-    expect(getLatestNotification()).toBe(
-      '<strong>Urgent requirement</strong> - complete by EOD'
+  test("getLatestNotification returns the expected string", () => {
+    expect(getLatestNotification()).toEqual(
+      "<strong>Urgent requirement</strong> - complete by EOD"
     );
   });
 });

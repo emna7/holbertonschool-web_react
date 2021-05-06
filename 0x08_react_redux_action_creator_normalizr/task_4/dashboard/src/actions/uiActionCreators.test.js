@@ -1,35 +1,44 @@
-import { LOGIN, LOGOUT, DISPLAY_NOTIFICATION_DRAWER, HIDE_NOTIFICATION_DRAWER } from './uiActionTypes';
-import { login, logout, displayNotificationDrawer, hideNotificationDrawer } from './uiActionCreators';
-import { expect as expectChai } from 'chai';
+import {
+  LOGIN,
+  LOGOUT,
+  DISPLAY_NOTIFICATION_DRAWER,
+  HIDE_NOTIFICATION_DRAWER,
+} from "./uiActionTypes";
 
-var _ = require('lodash');
+import {
+  login,
+  logout,
+  displayNotificationDrawer,
+  hideNotificationDrawer,
+} from "./uiActionCreators";
 
-describe('Test uiActionCreators.js', () => {
-  it('test for LOGIN' , (done) => {
-    const data = login('test@test.com', 'test');
-    const result = { type: LOGIN, user: { email: 'test@test.com', password: 'test' } };
-    expectChai(_.isEqual(data, result)).to.equal(true);
-    done();
+describe("Test the course action creators", () => {
+  it("login", () => {
+    const user = { email: "account@domain.extension", password: 123456789 };
+    const data = { type: LOGIN, user };
+    const result = login(user.email, user.password);
+
+    expect(result).toEqual(data);
   });
 
-  it('test for LOGOUT', (done) => {
-    const data = logout(1);
-    const result = { type: LOGOUT };
-    expectChai(_.isEqual(data, result)).to.equal(true);
-    done();
+  it("logout", () => {
+    const data = { type: LOGOUT };
+    const result = logout();
+
+    expect(result).toEqual(data);
   });
 
-  it('test for DISPLAY_NOTIFICATION_DRAWER', (done) => {
-    const data = displayNotificationDrawer(1);
-    const result = { type: DISPLAY_NOTIFICATION_DRAWER };
-    expectChai(_.isEqual(data, result)).to.equal(true);
-    done();
+  it("displayNotificationDrawer", () => {
+    const data = { type: DISPLAY_NOTIFICATION_DRAWER };
+    const result = displayNotificationDrawer();
+
+    expect(result).toEqual(data);
   });
 
-  it('test for HIDE_NOTIFICATION_DRAWER', (done) => {
-    const data = hideNotificationDrawer(1);
-    const result = { type: HIDE_NOTIFICATION_DRAWER };
-    expectChai(_.isEqual(data, result)).to.equal(true);
-    done();
+  it("hideNotificationDrawer", () => {
+    const data = { type: HIDE_NOTIFICATION_DRAWER };
+    const result = hideNotificationDrawer();
+
+    expect(result).toEqual(data);
   });
 });
