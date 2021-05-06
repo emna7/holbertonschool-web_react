@@ -22,36 +22,25 @@ const imgStyle = {
 
 class Notifications extends React.Component {
   shouldComponentUpdate(nextProps) {
-    const { listNotifications, displayDrawer } = this.props;
     // returns true render will be invoked
-    return (
-      listNotifications.length < nextProps.listNotifications.length ||
-      nextProps.displayDrawer !== displayDrawer
-    );
+    if (this.props.listNotifications.length < nextProps.listNotifications.length) return true;
+    if (this.props.displayDrawer !== nextProps.displayDrawer) return true;
+    return false;
   }
 
   render() {
-    const {
-      displayDrawer,
-      listNotifications,
-      handleDisplayDrawer,
-      handleHideDrawer,
-    } = this.props;
     return (
       <div className={css(style.notificationContainer, style.mediumNotificationContainer)}>
-        <div className={css(style.menuItem, displayDrawer ? style.hideElement: '')}
-             id="menuItem"
-             onClick={handleDisplayDrawer}
-        >Your notifications</div>
-        { displayDrawer ?
+        <div className={css(style.menuItem, this.props.displayDrawer ? style.hideElement : '')} id="menuItem" onClick={this.props.handleDisplayDrawer}>Your notifications</div>
+        { this.props.displayDrawer ?
           (<div className={css(style.notifications, style.mediumNotification)} id="notifications">
-            <button style={btnStyle} aria-label='Close' onClick={handleHideDrawer} id="closeNotifications">
-              <img src={close_icon} alt='Close' style={imgStyle}/>
+            <button style={btnStyle} aria-label='Close' onClick={this.props.handleHideDrawer} id="closeMenuItem">
+              <img src={close_icon} style={imgStyle}/>
             </button>
             <p>Here is the list of notifications</p>
             <ul className={css(style.mediumUl)}>
-              {listNotifications.length === 0 ? (<NotificationItem id={0} value="No new notification for now" type='no-new' markAsRead={this.markAsRead} />) : <></>}
-              {listNotifications.map((list) => (<NotificationItem id={list.id} key={list.id} type={list.type} value={list.value} html={list.html} markAsRead={this.markAsRead} />))}
+              {this.props.listNotifications.length === 0 ? (<NotificationItem id={0} value="No new notification for now" type='no-new' markAsRead={this.markAsRead} />) : <></>}
+              {this.props.listNotifications.map((list) => (<NotificationItem id={list.id} key={list.id} type={list.type} value={list.value} html={list.html} markAsRead={this.markAsRead} />))}
             </ul>
           </div>)
           : <></>
@@ -69,14 +58,14 @@ Notifications.propTypes = {
   displayDrawer: PropTypes.bool,
   listNotifications: PropTypes.arrayOf(NotificationItemShape),
   handleDisplayDrawer: PropTypes.func,
-  handleHideDrawer: PropTypes.func,
+  handleHideDrawer: PropTypes.func
 };
 
 Notifications.defaultProps = {
   displayDrawer: false,
   listNotifications: [],
-  handleDisplayDrawer: () => {},
-  handleHideDrawer: () => {},
+  handleDisplayDrawer: () => void(0),
+  handleHideDrawer: () => void(0)
 };
 
 const opacityKeyframes = {

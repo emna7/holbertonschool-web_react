@@ -1,17 +1,19 @@
 import React from 'react';
-import { shallow, configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import Header from './Header';
 import App from '../App/App';
-import PropTypes from 'prop-types';
-import { StyleSheetTestUtils } from 'aphrodite';
-
-configure({adapter: new Adapter()});
-
-StyleSheetTestUtils.suppressStyleInjection();
+import Header from './Header';
+import { StyleSheetTestUtils } from "aphrodite";
 
 describe('Test Header.js', () => {
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
+
   it('Header without crashing', (done) => {
     expect(shallow(<Header />).exists());
     done();

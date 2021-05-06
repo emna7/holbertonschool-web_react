@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import { mount } from 'enzyme';
-
+import { configure, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import WithLogging from './WithLogging';
 import Login from '../Login/Login';
+
+
+configure({
+	adapter: new Adapter()
+});
 
 describe('WithLogging', () => {
   test('console.log called on mount', () => {

@@ -1,79 +1,96 @@
-import React, { Component, Fragment} from 'react';
-import { StyleSheet, css, } from 'aphrodite';
+import React, { Component } from 'react';
+import { StyleSheet, css } from 'aphrodite';
 
 class Login extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			enableSubmit: false,
-			email: '',
-			password: '',
-		};
-		this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
-		this.handleChangeEmail = this.handleChangeEmail.bind(this);
-		this.handleChangePassword = this.handleChangePassword.bind(this);
-	};
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      enableSubmit: false,
+    };
+    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    this.handleChangeEmail = this.handleChangeEmail.bind(this);
+    this.handleChangePassword = this.handleChangePassword.bind(this);
+  }
 
-	handleLoginSubmit() {
-		const { email, password } = this.state;
-		this.props.logIn(email, password);
-	};
+  handleLoginSubmit(e) {
+    e.preventdefault();
+    const { email, password } = this.state;
+    this.props.logIn({ email, password });
+  }
 
-	handleChangeEmail(event) {
-		let pw = this.state.password;
-		this.setState({
-			[event.target.name]: event.target.value,
-			enableSubmit: ((event.target.value.length > 0) && (pw.length > 0)) ? true : false,
-		});
-	};
-	
-	handleChangePassword(event) {
-		let email = this.state.email;
-		this.setState({
-			[event.target.name]: event.target.value,
-			enableSubmit: ((event.target.value.length > 0) && (email.length > 0)) ? true : false,
-		});
-	};
+  handleChangeEmail(e) {
+    const value = e.target.value;
+    const { password } = this.state;
+    const enable = password.length > 0 && value.length > 0;
+    this.setState({ email: value, enableSubmit: enable });
+  }
 
-	render() {
-		return (
-			<Fragment>
-				<div className={css(styles.loginBody)}>
-					<p>
-						Login to access the full dashboard
-					</p>
-					<form onSubmit={this.handleLoginSubmit}>
-						<div className={css(styles.inputContainer)}>
-							<label htmlFor="email">Email: </label>
-							<input className={css(styles.input)} type="email" id="email" name="email" onChange={this.handleChangeEmail} />
-						</div>
-						<div className={css(styles.inputContainer)}>
-							<label htmlFor="password">Password: </label>
-							<input className={css(styles.input)} type="password" id="password" name="password" onChange={this.handleChangePassword} />
-						</div>
-						<div className={css(styles.inputContainer)}>
-							<input type="submit" value="submit" disabled={!this.state.enableSubmit}/>
-						</div>
-					</form>
-				</div>
-			</Fragment>
-		);
-	}
-};
+  handleChangePassword(e) {
+    const value = e.target.value;
+    const { email } = this.state;
+    const enable = email.length > 0 && value.length > 0;
+    this.setState({ password: value, enableSubmit: enable });
+  }
 
-const styles = StyleSheet.create({
-	loginBody: {
-		padding: '36px 24px',
-	},
-	input: {
-		margin: '0 16px 0 8px',
-	},
-	inputContainer: {
-		display: 'inline',
-		'@media (max-width: 900px)': {
-			display: 'block',
-		},
-	},
+  render(){
+    const { email, password, enableSubmit } = this.state
+    return (
+      <React.Fragment>
+        <div className={css(style.mediumContainer)}>
+          <p>Login to access the full dashboard</p>
+          <form>
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value={email}
+              onChange={this.handleChangeEmail}
+              className={css(style.loginContainerInput, style.mediumLogin)}
+            />
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              value={password}
+              onChange={this.handleChangePassword}
+              className={css(style.loginContainerInput, style.mediumLogin)}
+            />
+            <input
+              type="submit"
+              value="OK"
+              onSubmit={this.handleLoginSubmit}
+              className={css(style.mediumLogin)}
+              disabled={!enableSubmit}
+            />
+          </form>
+        </div>
+      </React.Fragment>
+    );
+  }
+}
+
+const style = StyleSheet.create({
+  loginContainerInput: {
+    marginRight: '9px',
+    marginLeft: '9px',
+  },
+  mediumContainer: {
+    '@media (max-width: 900px)': {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+    }
+  },
+  mediumLogin: {
+    '@media (max-width: 900px)': {
+      width: '30%',
+      margin: '9px 0',
+  }
+  }
 });
 
 export default Login;

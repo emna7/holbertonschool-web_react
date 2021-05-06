@@ -48,7 +48,7 @@ class CourseListRow extends Component {
 
 const styles = StyleSheet.create({
   row: {
-    backgroundColor: '#f5f5f5ab';
+    backgroundColor: '#f5f5f5ab',
     },
   headerRow: {
     backgroundColor: '#deb5b545',

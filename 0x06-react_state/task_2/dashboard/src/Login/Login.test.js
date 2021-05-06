@@ -27,7 +27,7 @@ describe('Test Login.js', () => {
 
   it('renders 2 inputs and 2 labels', (done) => {
     const wrapper = shallow(<Login />);
-    expect(wrapper.find('input')).to.have.lengthOf(2);
+    expect(wrapper.find('input')).to.have.lengthOf(3);
     expect(wrapper.find('label')).to.have.lengthOf(2);
     done();
   });

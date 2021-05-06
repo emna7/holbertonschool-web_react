@@ -1,16 +1,19 @@
 import React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
-import { shallow, configure } from 'enzyme';
+import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import App from '../App/App';
-import Login from './Login'
-import { StyleSheetTestUtils } from 'aphrodite';
+import Login from './Login';
+import { StyleSheetTestUtils } from "aphrodite";
 
-configure({adapter: new Adapter()});
+describe('Test Login.js', () => {
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
 
-StyleSheetTestUtils.suppressStyleInjection();
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
 
-describe('Testing Login.js', () => {
   it('Login without crashing', (done) => {
     expect(shallow(<Login />).exists());
     done();

@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     paddingLeft: '1rem',
     width: '20rem',
     backgroundColor: 'white',
-  }
+  },
   menuItem: {
     margin: '15px',
   }

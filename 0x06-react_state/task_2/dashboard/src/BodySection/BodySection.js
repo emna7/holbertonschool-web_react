@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; // ES6
 
 class BodySection extends React.Component {
   render() {
@@ -13,8 +13,11 @@ class BodySection extends React.Component {
 }
 
 BodySection.propTypes = {
-	title: PropTypes.string,
-	children: PropTypes.node
+  title: PropTypes.string
+}
+
+BodySection.defaultProps = {
+  title: ''
 }
 
 export default BodySection;

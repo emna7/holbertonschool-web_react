@@ -1,66 +1,57 @@
-import React, { Fragment, PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import close_icon from '../assets/close-icon.png';
+import NotificationItem from './NotificationItem';
+import PropTypes, { nominalTypeHack } from 'prop-types'; // ES6
+import NotificationItemShape from './NotificationItemShape';
 import { StyleSheet, css } from 'aphrodite';
 
-import closeIcon from '../assets/close-icon.png';
+const btnStyle = {
+  top: '1em',
+  right: '1em',
+  background: 'transparent',
+  border: 'none',
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'flex-end',
+};
 
-import NotificationItem from './NotificationItem';
-import NotificationItemShape from './NotificationItemShape';
+const imgStyle = {
+  width: '20px',
+  height: '20px',
+}
 
-class Notifications extends PureComponent {
+class Notifications extends React.PureComponent {
+  constructor(props) {
+    super(props)
+  }
+
   render() {
-    const { 
-      listNotifications,
+    const {
       displayDrawer,
+      listNotifications,
       handleDisplayDrawer,
       handleHideDrawer,
       markNotificationAsRead
     } = this.props;
-
     return (
-      <div className={css(styles.wrapper)} data-testid='wrapper'>
-        <div 
-        className={css(styles.div, styles['menu-item'])}
-        data-testid='menu-item'
-        onClick={handleDisplayDrawer}
-        >
-          Your Notifications
-        </div>
-        {displayDrawer && (
-          <div className={css(styles.div, styles.notifs)} data-testid='notifs'>
-          {listNotifications.length ? (
-            <Fragment>
-              <p>Here is the list of notifications</p>
-              <ul className={css(styles.list)}>
-                {listNotifications.map(({ id, type, value, html }) => (
-                  <NotificationItem
-                    key={id}
-                    id={id}
-                    type={type}
-                    value={value}
-                    html={html}
-                    markAsRead={markNotificationAsRead}
-                  />
-                ))}
-              </ul>
-            </Fragment>
-          ) : (
-            <p>No new notifications for now</p>
-          )}
-            <button
-              className={css(styles.button)}
-              aria-label='Close'
-              onClick={handleHideDrawer}
-              data-testid='close-notifs'
-            >
-              <img
-                src={closeIcon}
-                alt='Close'
-                style={{ height: '20px', width: '20px' }}
-              />
+      <div className={css(style.notificationContainer, style.mediumNotificationContainer)}>
+        <div className={css(style.menuItem, displayDrawer ? style.hideElement: '')}
+             id="menuItem"
+             onClick={handleDisplayDrawer}
+        >Your notifications</div>
+        { displayDrawer ?
+          (<div className={css(style.notifications, style.mediumNotification)} id="notifications">
+            <button style={btnStyle} aria-label='Close' onClick={handleHideDrawer} id="closeNotifications">
+              <img src={close_icon} alt='Close' style={imgStyle}/>
             </button>
-          </div>
-        )}
+            <p>Here is the list of notifications</p>
+            <ul className={css(style.mediumUl)}>
+              {listNotifications.length === 0 ? (<NotificationItem id={0} value="No new notification for now" type='no-new' markAsRead={markNotificationAsRead} />) : <></>}
+              {listNotifications.map((list) => (<NotificationItem id={list.id} key={list.id} type={list.type} value={list.value} html={list.html} markAsRead={markNotificationAsRead} />))}
+            </ul>
+          </div>)
+          : <></>
+        }
       </div>
     );
   }
@@ -83,75 +74,84 @@ Notifications.defaultProps = {
 };
 
 const opacityKeyframes = {
-  from: {
-    opacity: '0.5'
+  'from': {
+    opacity: 0.5,
   },
-  to: {
-    opacity: '1'
+
+  'to': {
+      opacity: 1,
   }
 };
 
-const bounceKeyframes = {
+const translateKeyframes = {
   '0%': {
-    transform: 'translateY(0px)'
+      transform: 'translateY(0)',
   },
+
   '50%': {
-    transform: 'translateY(-5px)'
+      transform: 'translateY(-5px)',
+  },
+  '75%': {
+    transform: 'translateY(5px)',
   },
   '100%': {
-    transform: 'translateY(5px)'
-  }
+      transform: 'translateY(0)',
+  },
 };
 
-const styles = StyleSheet.create({
-  div: {
-    padding: '1rem',
-    position: 'relative',
-    margin: '0.5rem',
+const style = StyleSheet.create({
+  notifications: {
+    border: '3px dashed #e1354b',
+    paddingLeft: '1rem',
+    paddingRight: '1rem',
+    paddingTop: '0.5rem',
+    width: '25rem',
+    background: 'white none repeat scroll 0% 0%',
+  },
+  mediumNotification: {
     '@media (max-width: 900px)': {
-      padding: '0'
+      border: 'none',
+      width: '100%',
+      height: '100%',
     }
   },
-  notifs: {
-    border: '1px dashed #e1354b',
-    backgroundColor: 'white',
-    '@media (max-width: 900px)': {
-      width: '95vw',
-      height: '95vh',
-      zIndex: '10',
-      fontSize: '20px'
-    }
-  },
-  'menu-item': {
-    marginBottom: 0,
-    '@media (max-width: 900px)': {
-    },
+  menuItem: {
+    marginBottom: '10px',
+    float: 'right',
+    textAlign: 'end',
+    backgroundColor: '#fff8f8',
+    cursor: 'pointer',
     ':hover': {
-      cursor: 'pointer',
-      animationName: [opacityKeyframes, bounceKeyframes],
+      animationName: [opacityKeyframes, translateKeyframes],
       animationDuration: '1s, 0.5s',
-      animationIterationCount: '3, 3',
-      animationTimingFunction: 'ease, ease'
+      animationIterationCount: '3',
     }
   },
-  wrapper: {
-    position: 'absolute',
-    right: '12px',
+  notificationContainer: {
     display: 'flex',
     flexDirection: 'column',
+    position: 'absolute',
+    right: '12px',
     flexWrap: 'wrap',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
-  list: {
+  mediumNotificationContainer: {
     '@media (max-width: 900px)': {
-      listStyleType: 'none',
-      paddingLeft: '0'
+      position: 'fixed',
+      width: '100%',
+      height: '100%',
+      zIndex: '6',
+      display: 'block !important',
     }
   },
-  button: {
-    top: '10px',
-    right: '10px',
-    backgroundColor: 'transparent'
+  hideElement: {
+    display: 'none',
+  },
+  mediumUl: {
+    '@media (max-width: 900px)': {
+      fontSize: '20px',
+      padding: '0',
+    }
   }
 });
 

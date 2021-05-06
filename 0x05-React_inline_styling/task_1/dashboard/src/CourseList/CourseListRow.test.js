@@ -3,10 +3,19 @@ import { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16';
 import { shallow, configure } from 'enzyme';
 import CourseListRow from './CourseListRow';
+import { StyleSheetTestUtils } from 'aphrodite';
 
 configure({adapter: new Adapter()});
 
 describe("Testing the <CourseListRow /> Component", () => {
+
+	beforeEach(() => {
+		StyleSheetTestUtils.suppressStyleInjection();
+	});
+
+	afterEach(() => {
+		StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+	});
 
 	it("Test if it renders one cell with colSpan=2 when textSecondCell doesn't exist and isHeader is true", () => {
 		
@@ -17,7 +26,7 @@ describe("Testing the <CourseListRow /> Component", () => {
 
 		let component = shallow(<CourseListRow {...props} />);
 
-		expect(component.contains(<tr><th colSpan={2}>{props.textFirstCell}</th></tr>)).to.equal(true);
+		expect(component.containsAllMatchingElements([<th colSpan={2}>{props.textFirstCell}</th>])).to.equal(true);
 	});
 
 	it("Test if it renders 2 cells when textSecondCell exists and isHeader is true", () => {
@@ -30,7 +39,10 @@ describe("Testing the <CourseListRow /> Component", () => {
 
 		let component = shallow(<CourseListRow {...props} />);
 
-		expect(component.contains(<tr><th>{props.textFirstCell}</th><th>{props.textSecondCell}</th></tr>)).to.equal(true);
+		expect(component.containsAllMatchingElements([
+			<th>{props.textFirstCell}</th>,
+			<th>{props.textSecondCell}</th>
+		])).to.equal(true);
 	});
 
 	it("Test if it renders 2 <td> within a <tr> element when isHeader is false", () => {
@@ -43,7 +55,10 @@ describe("Testing the <CourseListRow /> Component", () => {
 
 		let component = shallow(<CourseListRow {...props} />);
 
-		expect(component.contains(<tr><td>{props.textFirstCell}</td><td>{props.textSecondCell}</td></tr>)).to.equal(true);
+		expect(component.containsAllMatchingElements([
+			<td>{props.textFirstCell}</td>,
+			<td>{props.textSecondCell}</td>
+		])).to.equal(true);
 	});
 
 });

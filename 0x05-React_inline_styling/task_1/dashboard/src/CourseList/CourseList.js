@@ -19,7 +19,7 @@ class CourseList extends Component {
 			);
 		} else {
 			return (
-				<table clasName={css(styles.table)}>
+				<table className={css(styles.table)}>
 					<thead>
 						<CourseListRow textFirstCell="Available courses" isHeader={true} />
 						<CourseListRow textFirstCell="Course name" textSecondCell="Credit" />

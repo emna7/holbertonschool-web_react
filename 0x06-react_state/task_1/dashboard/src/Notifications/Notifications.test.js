@@ -1,16 +1,10 @@
 import React from 'react';
-import chai, { expect } from 'chai';
-import Adapter from 'enzyme-adapter-react-16';
-import { shallow, configure, mount } from 'enzyme';
+import { shallow } from 'enzyme';
+import { expect as expectChai } from 'chai';
 import Notifications from './Notifications';
 import NotificationItem from './NotificationItem';
 import { getLatestNotification } from '../utils/utils';
-import WithLogging from '../HOC/WithLogging.js';
-import sinonChai from 'sinon-chai';
-import { spy } from 'sinon';
-import { StyleSheetTestUtils } from 'aphrodite';
-
-StyleSheetTestUtils.suppressStyleInjection();
+import { StyleSheetTestUtils } from "aphrodite";
 
 describe('Test Notification.js', () => {
   let listNotifications = [
@@ -31,6 +25,14 @@ describe('Test Notification.js', () => {
     { id: 2, type: 'urgent', value: 'New resume available' },
   ];
 
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
+
   it('Notification without crashing', (done) => {
     expectChai(shallow(<Notifications />).exists());
     done();
@@ -44,31 +46,32 @@ describe('Test Notification.js', () => {
 
   it('renders the right html', (done) => {
     const wrapper = shallow(<Notifications displayDrawer={true} listNotifications={listNotifications}  />);
-    expectChai(wrapper.find(NotificationItem).first().html()).to.equal('<li data-notification-type="default">New course available</li>');
+    expectChai(wrapper.find(NotificationItem).first().props().type).to.equal('default');
+    expectChai(wrapper.find(NotificationItem).first().html()).to.match(/<li data-notification-type="default" class="default_*/);
     done();
   });
 
   it('menu item is being displayed when displayDrawer is false', (done) => {
     const wrapper = shallow(<Notifications />);
-    expectChai(wrapper.find('.menuItem')).to.have.lengthOf(1);
+    expectChai(wrapper.find('div#menuItem')).to.have.lengthOf(1);
     done();
   });
 
   it('Add a check that the div.Notifications is not being displayed when displayDrawer is false', (done) => {
     const wrapper = shallow(<Notifications />);
-    expectChai(wrapper.find('.Notifications')).to.have.lengthOf(0);
+    expectChai(wrapper.find('div#notifications')).to.have.lengthOf(0);
     done();
   });
 
   it('Add a check that the menu item is being displayed when displayDrawer is true', (done) => {
     const wrapper = shallow(<Notifications displayDrawer={true} />);
-    expectChai(wrapper.find('.Notifications')).to.have.lengthOf(1);
+    expectChai(wrapper.find('div#notifications')).to.have.lengthOf(1);
     done();
   });
 
   it('Add a check that the div.Notifications is being displayed when displayDrawer is true', (done) => {
     const wrapper = shallow(<Notifications displayDrawer={true}/>);
-    expectChai(wrapper.find('.Notifications')).to.have.lengthOf(1);
+    expectChai(wrapper.find('div#notifications')).to.have.lengthOf(1);
     done();
   });
 
@@ -89,7 +92,7 @@ describe('Test Notification.js', () => {
 
   it('Verify that when listNotifications is empty the message "Here is the list of notifications is not displayed", but "No new notification for now" is', (done) => {
     const wrapper = shallow(<Notifications displayDrawer={true} />);
-    expectChai(wrapper.find(NotificationItem).first().html()).to.equal('<li data-notification-type="no-new">No new notification for now</li>');
+    expectChai(wrapper.find(NotificationItem).first().html()).to.match(/<li data-notification-type="no-new" class="default*/);
     done();
   });
 
@@ -119,40 +122,22 @@ describe('Test Notification.js', () => {
     done();    
   });
 
-  it("verify that clicking on the menu item calls handleDisplayDrawer", (done) => {
+  it('verify that clicking on the menu item calls handleDisplayDrawer', (done) => {
     const handleDisplayDrawer = jest.fn();
     const handleHideDrawer = jest.fn();
-    const wrapper = shallow(
-      <Notifications
-        handleDisplayDrawer={handleDisplayDrawer}
-        handleHideDrawer={handleHideDrawer}
-      />
-    );
-
+    const wrapper = shallow(<Notifications handleDisplayDrawer={handleDisplayDrawer} handleHideDrawer={handleHideDrawer} />);
     wrapper.find("#menuItem").simulate("click");
     expect(handleDisplayDrawer).toHaveBeenCalled();
-    expect(handleHideDrawer).not.toHaveBeenCalled();
-
-    jest.restoreAllMocks();
     done();
   });
 
-  it("verify that clicking on the button calls handleHideDrawer", (done) => {
+  it('verify that clicking on the button calls handleHideDrawer', (done) => {
     const handleDisplayDrawer = jest.fn();
     const handleHideDrawer = jest.fn();
-    const wrapper = shallow(
-      <Notifications
-        displayDrawer
-        handleDisplayDrawer={handleDisplayDrawer}
-        handleHideDrawer={handleHideDrawer}
-      />
-    );
-
-    wrapper.find("#closeNotifications").simulate("click");
-    expect(handleDisplayDrawer).not.toHaveBeenCalled();
+    const wrapper = shallow(<Notifications displayDrawer={true} handleDisplayDrawer={handleDisplayDrawer} handleHideDrawer={handleHideDrawer} />);
+    wrapper.find("#closeMenuItem").simulate("click");
     expect(handleHideDrawer).toHaveBeenCalled();
-
-    jest.restoreAllMocks();
     done();
   });
 });
+

@@ -1,14 +1,19 @@
 import React from 'react';
+import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import Adapter from 'enzyme-adapter-react-16';
-import { shallow, configure } from 'enzyme';
 import App from '../App/App';
-import Footer from './Footer'
-import PropTypes from 'prop-types';
-
-configure({adapter: new Adapter()});
+import Footer from './Footer';
+import { StyleSheetTestUtils } from "aphrodite";
 
 describe('Test Footer.js', () => {
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
+
   it('Footer without crashing', (done) => {
     expect(shallow(<Footer />).exists());
     done();
@@ -25,4 +30,4 @@ describe('Test Footer.js', () => {
     expect(wrapper.text('Copyright')).contain('Copyright');
     done();
   });
-}); 
+});

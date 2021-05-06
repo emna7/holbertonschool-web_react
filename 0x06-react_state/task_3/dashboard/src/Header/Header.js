@@ -1,32 +1,48 @@
 import React from 'react';
-import logo from '../assets/holberton_logo.jpg';
-import { css, StyleSheet } from 'aphrodite';
+import logo from '../assets/holbertonlogo.jpg';
+import { StyleSheet, css } from 'aphrodite';
+import AppContext from '../App/AppContext'
 
-function Header() {
-  return (
-    <div className={css(styles.appHeader)}>
-      <img
-        src={logo}
-	className={css(styles.appLogo)}
-	alt='logo'
-      />
-      <h1 className={css(styles.appHeaderH1)}>School dashboard</h1>
-    </div>
-  )
+class Header extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className={css(style.appHeader)}>
+        <img src={logo} className={css(style.appLogo)} alt='logo' />
+        <h1 className={css(style.appHeaderH1)}>School dashboard</h1>
+
+        { this.context.user.isLoggedIn ?
+          <p id="logoutSection" className={css(style.logOut)}>Welcome {this.context.user.email} (<span onClick={this.context.logOut}>logout</span>)</p>
+          :
+          <></>
+        }
+      </div>
+    );
+  }
 }
 
-const styles = StyleSheet.create({
+Header.contextType = AppContext;
+
+const style = StyleSheet.create({
   appHeader: {
     backgroundColor: '#fff',
-    justifyContent: 'left',
+    borderBottom: '3px solid #e1354b',
   },
   appLogo: {
-    height: '100px',
-    width: '100px',
+    width: '200px',
+    height: '200px',
   },
   appHeaderH1: {
-    position: 'relative',
     display: 'inline',
+    position: 'relative',
+    top: '-6rem',
+    color: '#e1354b',
+  },
+  logOut: {
+    textAlign: 'end'
   }
 });
 
