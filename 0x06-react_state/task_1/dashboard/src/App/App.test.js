@@ -1,10 +1,13 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import { expect as expectChai } from 'chai';
 import App from './App';
 import CourseList from '../CourseList/CourseList';
 import Login from '../Login/Login';
 import { StyleSheetTestUtils } from "aphrodite";
+
+configure({ adapter: new Adapter() })
 
 describe('Test App.js', () => {
 	let events = {};
@@ -53,22 +56,29 @@ describe('Test App.js', () => {
     done();
   });
 
-  it('verify that the default state for displayDrawer is false. Verify that after calling handleDisplayDrawer, the state should now be true', (done) => {
-    const wrapper = mount(<App isLoggedIn={true} />);
-    expectChai(wrapper.state().displayDrawer).to.equal(false);
-    wrapper.instance().handleDisplayDrawer();
-    expectChai(wrapper.state().displayDrawer).to.equal(true);
-    done();
+  it("Has default state for displayDrawer false", () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.state().displayDrawer).toEqual(false);
   });
 
-  it('verify that after calling handleHideDrawer, the state is updated to be false', (done) => {
-    const wrapper = mount(<App isLoggedIn={true} />);
-    expectChai(wrapper.state().displayDrawer).to.equal(false);
+  it("displayDrawer changes to true when calling handleDisplayDrawer", () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.state().displayDrawer).toEqual(false);
+
+    const instance = wrapper.instance();
+    instance.handleDisplayDrawer();
+    expect(wrapper.state().displayDrawer).toEqual(true);
+  });
+
+  it("displayDrawer changes to false when calling handleHideDrawer", () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.state().displayDrawer).toEqual(false);
+
     wrapper.instance().handleDisplayDrawer();
-    expectChai(wrapper.state().displayDrawer).to.equal(true);
+    expect(wrapper.state().displayDrawer).toEqual(true);
+
     wrapper.instance().handleHideDrawer();
-    expectChai(wrapper.state().displayDrawer).to.equal(false);
-    done();
+    expect(wrapper.state().displayDrawer).toEqual(false);
   });
 });
 

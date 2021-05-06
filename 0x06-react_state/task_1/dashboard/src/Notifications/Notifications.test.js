@@ -1,10 +1,13 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import { expect as expectChai } from 'chai';
 import Notifications from './Notifications';
 import NotificationItem from './NotificationItem';
 import { getLatestNotification } from '../utils/utils';
 import { StyleSheetTestUtils } from "aphrodite";
+
+configure({ adapter: new Adapter() })
 
 describe('Test Notification.js', () => {
   let listNotifications = [

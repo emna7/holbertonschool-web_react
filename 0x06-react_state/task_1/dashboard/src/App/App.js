@@ -26,14 +26,18 @@ const listNotifications = [
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
-    this.handleHideDrawer = this.handleHideDrawer.bind(this);
     this.state = { displayDrawer: false };
+    this.handleClick = this.handleClick.bind(this);
+    this.handleHideDrawer = this.handleHideDrawer.bind(this);
+    this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
   }
 
   componentDidMount() {
     document.addEventListener("keydown", this.handleClick);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleClick);
   }
 
   handleClick(event) {
@@ -52,20 +56,27 @@ class App extends React.Component {
   }
 
   render() {
+    const { isLoggedIn } = this.props;
+    const { displayDrawer } = this.state;
     return (
       <React.Fragment>
-        <Notifications listNotifications={listNotifications} displayDrawer={this.state.displayDrawer} 
-                       handleDisplayDrawer={this.handleDisplayDrawer} handleHideDrawer={this.handleHideDrawer}></Notifications>
+        <Notifications
+          listNotifications={listNotifications}
+          displayDrawer={displayDrawer}
+          handleDisplayDrawer={this.handleDisplayDrawer}
+          handleHideDrawer={this.handleHideDrawer}
+        />
         <div className='App'>
-          <Header></Header>
+          <Header />
           <div className={css(style.appBody)}>
-            {this.props.isLoggedIn ? 
+            {isLoggedIn ? 
               <BodySectionWithMarginBottom title='Course list'>
-                <CourseList listCourses={listCourses} ></CourseList>
-              </BodySectionWithMarginBottom> : 
+                <CourseList listCourses={listCourses} />
+              </BodySectionWithMarginBottom> :
               <BodySectionWithMarginBottom title='Log in to continue'>
-                <Login></Login>
-              </BodySectionWithMarginBottom>}
+                <Login />
+              </BodySectionWithMarginBottom>
+            }
             <BodySection title='News from the School'>
               <p>Some news</p>
             </BodySection>
