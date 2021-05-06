@@ -2,6 +2,7 @@ import React from 'react';
 import { getLatestNotification, getFullYear, getFooterCopy } from './utils';
 import { StyleSheetTestUtils } from "aphrodite";
 
+
 describe('Test Utils.js', () => {
   beforeAll(() => {
     StyleSheetTestUtils.suppressStyleInjection();

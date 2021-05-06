@@ -1,33 +1,46 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import { expect as expectChai } from 'chai';
-import BodySectionWithMarginBottom from './BodySectionWithMarginBottom';
-import BodySection from './BodySection';
+import React from "react";
+import { expect } from "chai";
+import { shallow, configure, mount } from "enzyme";
+import BodySectionWithMarginBottom from "./BodySectionWithMarginBottom.js";
+import BodySection from "./BodySection.js";
+import Adapter from "enzyme-adapter-react-16";
 import { StyleSheetTestUtils } from "aphrodite";
 
-describe('Test BodySectionWithMarginBottom.js', () => {
-  beforeAll(() => {
+configure({
+  adapter: new Adapter(),
+});
+
+describe("Testing component <BodySectionWithMarginBottom/>", () => {
+  beforeEach(() => {
     StyleSheetTestUtils.suppressStyleInjection();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+    jest.useFakeTimers();
+    jest.runAllTimers();
   });
 
-  it('Render without crashing', (done) => {
-    expectChai(shallow(<BodySectionWithMarginBottom title='test title' />).exists());
-    done();
+  test("Test 1 renders the 'BodySection' Component correctly with children", () => {
+    const wrapper = mount(
+      <BodySectionWithMarginBottom title="Title">
+        <p>paragraph 1</p>
+        <p>paragraph 2</p>
+      </BodySectionWithMarginBottom>
+    );
+    const BDComponent = wrapper.find(BodySection);
+    const h2 = BDComponent.find("h2");
+    const paragh = BDComponent.find("p");
+    expect(h2).to.have.lengthOf(1);
+    expect(h2.text()).to.equal("Title");
+    expect(paragh).to.have.lengthOf(2);
+    expect(paragh.at(0).text()).to.equal("paragraph 1");
+    expect(paragh.at(1).text()).to.equal("paragraph 2");
   });
 
-  it ('Test if render correctly a BodySection component and that the props are passed correctly to the child component', (done) => {
-    const wrapper = shallow(<BodySectionWithMarginBottom title='test title'><p>test children node</p></BodySectionWithMarginBottom>)
-    expectChai(wrapper.contains(<div className='bodySectionWithMargin' />));
-    expectChai(wrapper.children()).to.have.lengthOf(1);
-    expectChai(wrapper.find(BodySection)).to.have.lengthOf(1);
-    expectChai(wrapper.find(BodySection).children()).to.have.lengthOf(1);
-    expectChai(wrapper.find(BodySection).props().title).to.equal('test title');
-    expectChai(wrapper.find('p')).to.have.lengthOf(1);
-    expectChai(wrapper.find('p').text()).to.equal('test children node');
-    done();
-  })
+  test("Test 2 render with correct style", () => {
+    const wrapper1 = mount(<BodySectionWithMarginBottom />);
+    const wrapper2 = wrapper1.find(".bodySectionWithMargin");
+    expect(wrapper2.exists());
+  });
 });

@@ -1,49 +1,60 @@
-import React from 'react';
-import logo from '../assets/holbertonlogo.jpg';
-import { StyleSheet, css } from 'aphrodite';
-import AppContext from '../App/AppContext'
+import React, { Component } from "react";
+import logo from "../assets/Holberton logo.jpg";
+import { StyleSheet, css } from "aphrodite";
+import AppContext from "../App/AppContext";
 
-class Header extends React.Component {
+class Header extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    return (
-      <div className={css(style.appHeader)}>
-        <img src={logo} className={css(style.appLogo)} alt='logo' />
-        <h1 className={css(style.appHeaderH1)}>School dashboard</h1>
+    const { user, logOut } = this.context;
 
-        { this.context.user.isLoggedIn ?
-          <p id="logoutSection" className={css(style.logOut)}>Welcome {this.context.user.email} (<span onClick={this.context.logOut}>logout</span>)</p>
-          :
-          <></>
-        }
-      </div>
+    return (
+      <header className={css(styles.AppHeader)}>
+        <img className={css(styles.Applogo)} src={logo} alt="logo" />
+        <h1 className={css(styles.heading1)}>School dashboard</h1>
+        {user.isLoggedIn && (
+          <p id="logoutSection" className={css(styles.logoutSection)}>
+            Welcome <b>{`${user.email} `}</b>
+            <span className={css(styles.logoutSectionSpan)} onClick={logOut}>
+              (logout)
+            </span>
+          </p>
+        )}
+      </header>
     );
   }
 }
 
-Header.contextType = AppContext;
-
-const style = StyleSheet.create({
-  appHeader: {
-    backgroundColor: '#fff',
-    borderBottom: '3px solid #e1354b',
+const styles = StyleSheet.create({
+  AppHeader: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "left",
+    alignItems: "center",
+    textColor: "#e1484c",
   },
-  appLogo: {
-    width: '200px',
-    height: '200px',
+  Applogo: {
+    height: "250px",
   },
-  appHeaderH1: {
-    display: 'inline',
-    position: 'relative',
-    top: '-6rem',
-    color: '#e1354b',
+  heading1: {
+    color: "#e1484c",
   },
-  logOut: {
-    textAlign: 'end'
-  }
+  logoutSection: {
+    color: "black",
+    position: "absolute",
+    right: 0,
+    paddingRight: "20px",
+    alignSelf: "flex-end",
+  },
+  logoutSectionSpan: {
+    fontStyle: "italic",
+    cursor: "pointer",
+  },
 });
+
+Header.contextType = AppContext;
 
 export default Header;
