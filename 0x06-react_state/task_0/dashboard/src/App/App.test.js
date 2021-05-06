@@ -1,10 +1,13 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { configure, shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import { expect as expectChai } from 'chai';
 import App from './App';
 import CourseList from '../CourseList/CourseList';
 import Login from '../Login/Login';
 import { StyleSheetTestUtils } from "aphrodite";
+
+configure({ adapter: new Adapter() })
 
 describe('Test App.js', () => {
 	let events = {};
